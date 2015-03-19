@@ -1,0 +1,106 @@
+﻿@model RssReader.Models.RssHeader
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>RssHeader</h4>
+    <hr />
+    
+
+    <dl class="dl-horizontal">        
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Link)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm("Details", "RssFeed", FormMethod.Get))
+    {
+        <p>
+            <input type="text" id="dpFrom" class="span2 datepicker" placeholder="Date from..." name="from"><br />
+            <input type="text" id="dpUntil" class="span2 datepicker" placeholder="Date until..." name="until"><br />
+            <input type="submit" value="Filter" />
+        </p>
+    }
+
+    @Html.AntiForgeryToken()
+    <table class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                PublicationDate
+            </th>
+            <th>
+                Link
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Datas)
+        {
+            <tr>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @System.Web.HttpUtility.HtmlDecode(item.Description)
+                </td>
+                <td>
+                    @item.PublicationDate
+                </td>
+                <td>
+                    <a href="@item.Link" target="_blank">More</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+    
+
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+@section Scripts
+{
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>   
+    <script>
+        $(function () {
+            // init bootstrap datepicker
+            $('#dpFrom').datepicker({
+                format: 'dd.mm.yyyy'
+            });
+
+            $('#dpUntil').datepicker({
+                format: 'dd.mm.yyyy'
+            });
+        })        
+    </script> 
+}

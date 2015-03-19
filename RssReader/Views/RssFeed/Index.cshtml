@@ -1,0 +1,60 @@
+﻿@model IEnumerable<RssReader.Models.RssHeader>
+
+@{
+    ViewBag.Title = "RSS overview";
+}
+
+@section Scripts{
+    <script src="~/Scripts/custom/custom.js"></script>
+}
+
+
+
+<h2>Overview</h2>
+
+<p>
+    @Html.ActionLink("Register new channel", "Create")
+</p>
+
+@using (Html.BeginForm("DeleteSelectedFeeds", "RssFeed", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+<table class="table">
+    <tr>
+        <th><input type="checkbox" id="checkAll"/>Check all</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Link)
+        </th>        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <input type="checkbox" name="feedIdsToDelete" id="feedIdsToDelete" value="@item.ID" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Link)
+        </td>        
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
+    <input type="submit" value="Delete selected feeds" id="btnDeleteAll" disabled="disabled" />
+}
